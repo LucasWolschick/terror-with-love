@@ -60,6 +60,7 @@ function Player:update(dt)
 
     self:moveUpdate(dt)
 
+    -- pickable items
     if not self.carrying then
         local pickables = tagged.getTagged(tagged.tags.PICKABLE)
         local nearest, distance = nil, 10
@@ -81,6 +82,16 @@ function Player:update(dt)
         end
     end
 
+    -- interactible items
+    if not self.carrying then
+        local interactibles = tagged.getTagged(tagged.tags.INTERACTIBLE)
+        for _, interactible in ipairs(interactibles) do
+            if self:distance(interactible) < interactible:interactRadius() and love.keyboard.isDown("e") and not self.eWasPressed then
+                interactible:interact()
+            end
+        end
+    end
+
     self.eWasPressed = love.keyboard.isDown("e")
 end
 
@@ -90,7 +101,6 @@ function Player:draw()
     end
 
     love.graphics.setColor(1, 1, 1, 1)
-    -- pivot point squarely in the middle of the player's feet
     love.graphics.draw(plrImage, math.floor(self.x - self.w / 2), math.floor(self.y - self.h), 0, 1, 1)
 end
 

@@ -37,6 +37,10 @@ end
 function Entity:draw()
 end
 
+-- for camera, mainly
+function Entity:drawEnd()
+end
+
 function Entity:remove()
     tagged.removeTag(self, tagged.tags.ENTITY)
 end

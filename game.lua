@@ -1,15 +1,18 @@
-local bgImage      = love.graphics.newImage("assets/bg.png")
+local Player           = require "player"
+local PickableItem     = require "pickableItem"
+local tagged           = require "tagged"
+local InteractibleItem = require "interactibleItem"
+local Camera           = require "camera"
+local Room             = require "room"
 
-local Player       = require "player"
-local PickableItem = require "pickableItem"
-local tagged       = require "tagged"
-
-local Game         = {}
-Game.__index       = Game
+local Game             = {}
+Game.__index           = Game
 
 function Game.new()
     local self = setmetatable({}, Game)
 
+    Camera.new()
+    Room.new()
     Player.new(100, 100)
     PickableItem.new(100, 100, "ball", "assets/thing.png")
 
@@ -27,8 +30,7 @@ function Game:update(dt)
 end
 
 function Game:draw()
-    love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.draw(bgImage, 0, 0, 0, 1, 1)
+    love.graphics.clear(0, 0, 0, 1)
 
     local drawQueue = {}
     for _, object in ipairs(tagged.getTagged(tagged.tags.ENTITY)) do
@@ -37,8 +39,13 @@ function Game:draw()
     table.sort(drawQueue, function(a, b)
         return a:zIndex() < b:zIndex()
     end)
-    for _, object in ipairs(drawQueue) do
+    for i = 1, #drawQueue do
+        local object = drawQueue[i]
         object:draw()
+    end
+    for i = #drawQueue, 1, -1 do
+        local object = drawQueue[i]
+        object:drawEnd()
     end
 end
 

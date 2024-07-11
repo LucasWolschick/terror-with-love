@@ -25,5 +25,6 @@ function love.draw()
     game:draw()
     love.graphics.setCanvas()
 
+    love.graphics.setColor(1, 1, 1, 1)
     love.graphics.draw(canvas, 0, 0, 0, SCALE, SCALE)
 end
