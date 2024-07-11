@@ -4,6 +4,8 @@ Tagged.tags = {}
 Tagged.tags.ENTITY = "entity"
 Tagged.tags.PLAYER = "player"
 Tagged.tags.PICKABLE = "pickable"
+Tagged.tags.INTERACTIBLE = "interactible"
+Tagged.tags.CAMERA = "camera"
 
 local tags = {}
 
