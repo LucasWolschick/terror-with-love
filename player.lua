@@ -101,7 +101,7 @@ function Player:carriedItemUpdate(dt)
     -- pick up/drop an item
     if not self.carrying then
         local pickables = tagged.getTagged(tagged.tags.PICKABLE)
-        local nearest, distance = nil, 10
+        local nearest, distance = nil, 20
         for _, pickable in ipairs(pickables) do
             local d = self:distance(pickable)
             if pickable:pickable() and d < distance then

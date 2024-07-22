@@ -1,22 +1,23 @@
-local Player             = require "player"
-local PickableItem       = require "pickableItem"
-local tagged             = require "tagged"
-local InteractibleItem   = require "interactibleItem"
-local Camera             = require "camera"
-local Map                = require "map"
-local PickableReceptacle = require "pickablereceptacle"
+local Player = require "player"
+local tagged = require "tagged"
+local Camera = require "camera"
+local Map    = require "map"
+local Hud    = require "hud"
 
-local Game               = {}
-Game.__index             = Game
+local Game   = {}
+Game.__index = Game
 
 function Game.new()
     local self = setmetatable({}, Game)
 
-    Camera.new(1024 - WIDTH / 2, 1860 - HEIGHT / 2)
     Map.new()
     Player.new(1024, 1860)
-    PickableItem.new(100, 100, "ball", "assets/thing.png")
-    PickableReceptacle.new(200, 200, "receptacle")
+    Camera.new(1024 - WIDTH / 2, 1860 - HEIGHT / 2)
+
+    self.hud = Hud.new()
+    self.progress = 0
+
+    tagged.addTag(self, tagged.tags.GAME)
 
     return self
 end
@@ -29,6 +30,14 @@ function Game:update(dt)
     if love.keyboard.isDown("escape") then
         love.event.quit()
     end
+end
+
+function Game:setProgress(progress)
+    self.progress = progress
+end
+
+function Game:getProgress()
+    return self.progress
 end
 
 function Game:draw()
@@ -49,6 +58,8 @@ function Game:draw()
         local object = drawQueue[i]
         object:drawEnd()
     end
+
+    self.hud:draw(self)
 end
 
 return Game

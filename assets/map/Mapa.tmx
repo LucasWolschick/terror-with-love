@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="64" tileheight="64" infinite="0" nextlayerid="11" nextobjectid="108">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="64" tileheight="64" infinite="0" nextlayerid="13" nextobjectid="136">
  <editorsettings>
   <export target="map.lua" format="lua"/>
  </editorsettings>
@@ -41,7 +41,7 @@
 85,86,86,86,86,88,0,0,0,0,0,0,0,0,3221225517,82,83,45,0,0,0,0,3221225517,82,82,82,82,82,82,82,82,45
 </data>
  </layer>
- <objectgroup id="7" name="walls">
+ <objectgroup id="7" name="walls" visible="0">
   <properties>
    <property name="collidable" type="bool" value="true"/>
   </properties>
@@ -89,37 +89,102 @@
   <object id="87" x="0" y="2048" width="2112" height="64"/>
   <object id="88" x="-64" y="0" width="64" height="2112"/>
  </objectgroup>
- <objectgroup color="#00ff00" id="9" name="rooms" visible="0" locked="1">
-  <object id="70" name="biblioteca" x="0" y="192" width="768" height="512" visible="0"/>
-  <object id="71" name="piano" x="384" y="640" width="384" height="512" visible="0"/>
-  <object id="72" name="escritorio" x="0" y="640" width="384" height="512" visible="0"/>
-  <object id="73" name="salao_jantar" x="768" y="576" width="640" height="576" visible="0"/>
-  <object id="74" name="cozinha" x="768" y="192" width="640" height="448" visible="0"/>
-  <object id="75" name="quarto1" x="1408" y="576" width="320" height="576" visible="0"/>
-  <object id="76" name="quarto2" x="1728" y="576" width="320" height="576" visible="0"/>
-  <object id="77" name="corredor" x="0" y="1088" width="2048" height="320" visible="0"/>
-  <object id="78" name="suite" x="0" y="1344" width="384" height="576" visible="0"/>
-  <object id="79" name="lazer" x="384" y="1344" width="320" height="576" visible="0"/>
-  <object id="80" name="salao" x="704" y="1344" width="704" height="704" visible="0"/>
-  <object id="82" name="reuniao" x="1664" y="1344" width="384" height="256" visible="0"/>
-  <object id="83" name="banheiro" x="0" y="1856" width="384" height="192" visible="0"/>
-  <object id="106" name="lareira" x="1408" y="1344" width="256" height="704" visible="0"/>
-  <object id="107" name="arte" x="1664" y="1728" width="384" height="320" visible="0"/>
+ <objectgroup color="#00ff00" id="9" name="rooms" locked="1">
+  <object id="70" name="biblioteca" x="0" y="192" width="768" height="512"/>
+  <object id="71" name="piano" x="384" y="640" width="384" height="512"/>
+  <object id="72" name="escritorio" x="0" y="640" width="384" height="512"/>
+  <object id="73" name="salao_jantar" x="768" y="576" width="640" height="576"/>
+  <object id="74" name="cozinha" x="768" y="192" width="640" height="448"/>
+  <object id="75" name="quarto1" x="1408" y="576" width="320" height="576"/>
+  <object id="76" name="quarto2" x="1728" y="576" width="320" height="576"/>
+  <object id="77" name="corredor" x="0" y="1088" width="2048" height="320"/>
+  <object id="78" name="suite" x="0" y="1344" width="384" height="576"/>
+  <object id="79" name="lazer" x="384" y="1344" width="320" height="576"/>
+  <object id="80" name="salao" x="704" y="1344" width="704" height="704"/>
+  <object id="82" name="reuniao" x="1664" y="1344" width="384" height="256"/>
+  <object id="83" name="banheiro" x="0" y="1856" width="384" height="192"/>
+  <object id="106" name="lareira" x="1408" y="1344" width="256" height="704"/>
+  <object id="107" name="arte" x="1664" y="1728" width="384" height="320"/>
  </objectgroup>
  <objectgroup color="#ffff00" id="10" name="cameras" visible="0" locked="1">
-  <object id="89" x="0" y="192" width="768" height="512" visible="0"/>
-  <object id="90" x="384" y="640" width="384" height="512" visible="0"/>
-  <object id="91" x="0" y="640" width="384" height="512" visible="0"/>
-  <object id="92" x="768" y="576" width="640" height="576" visible="0"/>
-  <object id="93" x="768" y="192" width="640" height="448" visible="0"/>
-  <object id="94" x="1408" y="576" width="320" height="576" visible="0"/>
-  <object id="95" x="1728" y="576" width="320" height="576" visible="0"/>
-  <object id="96" x="0" y="1088" width="2048" height="320" visible="0"/>
-  <object id="97" x="0" y="1344" width="384" height="576" visible="0"/>
-  <object id="98" x="384" y="1344" width="320" height="576" visible="0"/>
-  <object id="99" x="704" y="1344" width="704" height="704" visible="0"/>
-  <object id="101" x="0" y="1856" width="384" height="192" visible="0"/>
-  <object id="105" x="1408" y="1408" width="640" height="640" visible="0"/>
-  <object id="100" x="1664" y="1344" width="384" height="256" visible="0"/>
+  <object id="89" x="0" y="192" width="768" height="512"/>
+  <object id="90" x="384" y="640" width="384" height="512"/>
+  <object id="91" x="0" y="640" width="384" height="512"/>
+  <object id="92" x="768" y="576" width="640" height="576"/>
+  <object id="93" x="768" y="192" width="640" height="448"/>
+  <object id="94" x="1408" y="576" width="320" height="576"/>
+  <object id="95" x="1728" y="576" width="320" height="576"/>
+  <object id="96" x="0" y="1088" width="2048" height="320"/>
+  <object id="97" x="0" y="1344" width="384" height="576"/>
+  <object id="98" x="384" y="1344" width="320" height="576"/>
+  <object id="99" x="704" y="1344" width="704" height="704"/>
+  <object id="101" x="0" y="1856" width="384" height="192"/>
+  <object id="105" x="1408" y="1408" width="640" height="640"/>
+  <object id="100" x="1664" y="1344" width="384" height="256"/>
+ </objectgroup>
+ <objectgroup id="11" name="items">
+  <object id="108" name="estatueta" x="1856" y="704">
+   <point/>
+  </object>
+  <object id="109" name="alvo_estatueta" x="64" y="512">
+   <point/>
+  </object>
+  <object id="112" name="chave1" x="384" y="256">
+   <point/>
+  </object>
+  <object id="113" name="prato" x="832" y="768">
+   <point/>
+  </object>
+  <object id="114" name="alvo_prato" x="1344" y="896">
+   <point/>
+  </object>
+  <object id="115" name="chave2" x="1088" y="320">
+   <point/>
+  </object>
+  <object id="116" name="alavanca_escritorio" x="190" y="676">
+   <point/>
+  </object>
+  <object id="117" name="chave3" x="1856" y="1536">
+   <point/>
+  </object>
+  <object id="118" name="espelho" x="448" y="1856">
+   <point/>
+  </object>
+  <object id="119" name="alvo_espelho" x="64" y="1984">
+   <point/>
+  </object>
+  <object id="121" name="chave5" x="256" y="768">
+   <point/>
+  </object>
+  <object id="122" name="chave4" x="64" y="1600">
+   <point/>
+  </object>
+  <object id="123" name="chave6" x="1536" y="1472">
+   <point/>
+  </object>
+  <object id="124" name="balde" x="320" y="1984">
+   <point/>
+  </object>
+  <object id="125" name="quadro" x="1856" y="1728">
+   <point/>
+  </object>
+  <object id="126" name="chave7" x="1856" y="1920">
+   <point/>
+  </object>
+  <object id="127" name="alavanca_quarto1" x="1472" y="576">
+   <point/>
+  </object>
+  <object id="134" name="escrivaninha" x="64" y="960">
+   <point/>
+  </object>
+  <object id="135" name="lareira" x="1535.33" y="1426">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup color="#aa5500" id="12" name="doors">
+  <object id="130" name="sala_final" x="925.5" y="1983.5" width="196.5" height="63"/>
+  <object id="131" name="sala_cozinha" x="1152" y="448" width="128" height="192"/>
+  <object id="132" name="sala_reuniao" x="1856" y="1280" width="128.5" height="126"/>
+  <object id="133" name="sala_arte" x="1635" y="1728" width="55.5" height="320.5"/>
  </objectgroup>
 </map>

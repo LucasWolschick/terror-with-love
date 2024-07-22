@@ -8,6 +8,8 @@ Tagged.tags.INTERACTIBLE = "interactible"
 Tagged.tags.RECEPTACLE = "receptacle"
 Tagged.tags.CAMERA = "camera"
 Tagged.tags.MAP = "map"
+Tagged.tags.GAME = "game"
+Tagged.tags.DOOR = "door"
 
 local tags = {}
 

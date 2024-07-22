@@ -1,11 +1,13 @@
-local sti     = require "lib.sti"
-local Collide = require "collide"
+local sti      = require "lib.sti"
+local Collide  = require "collide"
+local mapsetup = require "mapsetup"
+local Door     = require "door"
 
-local Entity  = require "entity"
-local tagged  = require "tagged"
+local Entity   = require "entity"
+local tagged   = require "tagged"
 
-local Map     = {}
-Map.__index   = Map
+local Map      = {}
+Map.__index    = Map
 setmetatable(Map, Entity)
 
 local function rotate(t, theta)
@@ -75,6 +77,18 @@ function Map.new()
         table.insert(self.rooms, t)
     end
 
+    for _, object in pairs(self.map.layers["doors"].objects) do
+        local t = rotate({
+            x1 = object.x,
+            y1 = object.y,
+            x2 = object.x + object.width,
+            y2 = object.y + object.height
+        }, math.rad(object.rotation))
+        Door.new(object.name, t.x1, t.y1, t.x2 - t.x1, t.y2 - t.y1)
+    end
+
+    mapsetup(self.map)
+
     tagged.addTag(self, tagged.tags.MAP)
 
     return self
@@ -86,6 +100,17 @@ function Map:resolveCollision(rect)
 
     for _, wall in ipairs(self.walls) do
         local collides, x, y = Collide.resolveAabb(rect, wall)
+        collided = collided or collides
+        dx = dx + x
+        dy = dy + y
+        rect.x1 = rect.x1 + x
+        rect.y1 = rect.y1 + y
+        rect.x2 = rect.x2 + x
+        rect.y2 = rect.y2 + y
+    end
+
+    for _, door in ipairs(tagged.getTagged(tagged.tags.DOOR)) do
+        local collides, x, y = door:collide(rect)
         collided = collided or collides
         dx = dx + x
         dy = dy + y
