@@ -7,4 +7,5 @@ function love.conf(t)
     t.window.width = WIDTH * SCALE
     t.window.height = HEIGHT * SCALE
     t.window.title = "Terror no Escuro"
+    t.console = true
 end

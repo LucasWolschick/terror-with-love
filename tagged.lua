@@ -5,13 +5,14 @@ Tagged.tags.ENTITY = "entity"
 Tagged.tags.PLAYER = "player"
 Tagged.tags.PICKABLE = "pickable"
 Tagged.tags.INTERACTIBLE = "interactible"
+Tagged.tags.RECEPTACLE = "receptacle"
 Tagged.tags.CAMERA = "camera"
 
 local tags = {}
 
 function Tagged.addTag(entity, tag)
     if not tags[tag] then
-        tags[tag] = setmetatable({}, { __mode = "v" })
+        tags[tag] = {}
     end
     table.insert(tags[tag], entity)
 end
@@ -33,6 +34,17 @@ end
 
 function Tagged.getFirstTagged(tag)
     return tags[tag] and tags[tag][1] or nil
+end
+
+function Tagged.hasTag(entity, tag)
+    if tags[tag] then
+        for _, e in ipairs(tags[tag]) do
+            if e == entity then
+                return true
+            end
+        end
+    end
+    return false
 end
 
 function Tagged.wipe()

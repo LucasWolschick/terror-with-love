@@ -1,7 +1,7 @@
 local Entity = require "entity"
 local tagged = require "tagged"
 
-local PADDING = 5
+local PADDING = 20
 local MARGIN = 50
 
 local function clamp(x, min, max)
@@ -43,15 +43,47 @@ setmetatable(Camera, Entity)
     When the player leaves the camera box, it looks for the next camera box to enter.
     If there is no camera box to enter, the camera is free again.
 ]]
+
+local function box(t)
+    return { x1 = t[1], y1 = t[2], x2 = t[3], y2 = t[4] }
+end
+
 function Camera.new()
     local self = Entity.new(0, 0)
     setmetatable(self, Camera)
 
     self.boxes = {
-        { x1 = 0,   y1 = 0,   x2 = 500, y2 = 500 },
-        { x1 = 500, y1 = 0,   x2 = 600, y2 = 700 },
-        { x1 = 0,   y1 = 500, x2 = 500, y2 = 700 },
-        { x1 = 0,   y1 = -50, x2 = 500, y2 = 0 },
+        -- biblioteca
+        box { 98, 66, 586, 322 },
+        -- cozinha
+        box { 624, 181, 1050, 362 },
+        -- escritório
+        box { 98, 332, 352, 668 },
+        -- piano
+        box { 382, 332, 590, 668 },
+        -- salão de jantar
+        box { 624, 392, 1050, 668 },
+        -- quarto 1
+        box { 1086, 286, 1342, 668 },
+        -- quarto 2
+        box { 1384, 286, 1638, 668 },
+        -- corredor
+        box { 98, 697, 1638, 827 },
+        -- suíte
+        box { 98, 850, 362, 1193 },
+        -- sala de lazer
+        box { 392, 850, 615, 1269 },
+        -- salão principal
+        box { 646, 917, 1026, 1206 },
+        -- lareira
+        box { 1054, 850, 1272, 1250 },
+        -- sala de reunião
+        box { 1300, 850, 1638, 977 },
+        -- salão de arte
+        box { 1300, 1000, 1638, 1348 },
+        -- banheiro
+        box { 98, 1209, 362, 1348 },
+        -- saída
     }
     self.activeBox = nil
 
@@ -78,6 +110,7 @@ function Camera:update(dt)
 
         if not self.activeBox then
             for _, box in ipairs(self.boxes) do
+                -- no padding here
                 if plr.x >= box.x1 and plr.x <= box.x2 and
                     plr.y >= box.y1 and plr.y <= box.y2 then
                     self.activeBox = box
@@ -118,7 +151,7 @@ function Camera:update(dt)
         end
     end
 
-    local t = 10 * dt
+    local t = clamp(5 * dt, 0, 1)
     self.x = t * (tgtX) + (1 - t) * self.x
     self.y = t * (tgtY) + (1 - t) * self.y
 end

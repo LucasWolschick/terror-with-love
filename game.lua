@@ -1,12 +1,13 @@
-local Player           = require "player"
-local PickableItem     = require "pickableItem"
-local tagged           = require "tagged"
-local InteractibleItem = require "interactibleItem"
-local Camera           = require "camera"
-local Room             = require "room"
+local Player             = require "player"
+local PickableItem       = require "pickableItem"
+local tagged             = require "tagged"
+local InteractibleItem   = require "interactibleItem"
+local Camera             = require "camera"
+local Room               = require "room"
+local PickableReceptacle = require "pickablereceptacle"
 
-local Game             = {}
-Game.__index           = Game
+local Game               = {}
+Game.__index             = Game
 
 function Game.new()
     local self = setmetatable({}, Game)
@@ -15,6 +16,7 @@ function Game.new()
     Room.new()
     Player.new(100, 100)
     PickableItem.new(100, 100, "ball", "assets/thing.png")
+    PickableReceptacle.new(200, 200, "receptacle")
 
     return self
 end

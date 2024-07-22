@@ -11,7 +11,7 @@ function PickableItem.new(x, y, id, img)
 
     tagged.addTag(self, tagged.tags.PICKABLE)
 
-    self.player = nil
+    self.holder = nil
     self.id = id
     self.img = love.graphics.newImage(img)
     self.w, self.h = self.img:getDimensions()
@@ -20,15 +20,17 @@ function PickableItem.new(x, y, id, img)
 end
 
 function PickableItem:pickable()
-    return not self.player
+    return not self.holder or not tagged.hasTag(self.holder, tagged.tags.PLAYER)
 end
 
-function PickableItem:pick(player)
-    self.player = player
+function PickableItem:pick(holder)
+    self.holder = holder
+    self.x = holder.x
+    self.y = holder.y
 end
 
 function PickableItem:drop(x, y)
-    self.player = nil
+    self.holder = nil
     self.x = x
     self.y = y
 end
@@ -39,16 +41,16 @@ function PickableItem:draw()
     end
 
     love.graphics.setColor(1, 1, 1, 1)
-    if self.player then
-        love.graphics.draw(self.img, math.floor(self.player.x - self.w / 2), math.floor(self.player.y - self.h), 0, 1, 1)
+    if self.holder then
+        love.graphics.draw(self.img, math.floor(self.holder.x - self.w / 2), math.floor(self.holder.y - self.h), 0, 1, 1)
     else
         love.graphics.draw(self.img, math.floor(self.x - self.w / 2), math.floor(self.y - self.h), 0, 1, 1)
     end
 end
 
 function PickableItem:zIndex()
-    if self.player then
-        return self.player:zIndex() + 1
+    if self.holder then
+        return self.holder:zIndex() + 1
     else
         return self.y
     end

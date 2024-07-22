@@ -1,4 +1,5 @@
 local Game = require "game"
+local tagged = require "tagged"
 
 local game
 local canvas = love.graphics.newCanvas(WIDTH, HEIGHT)
@@ -27,4 +28,9 @@ function love.draw()
 
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.draw(canvas, 0, 0, 0, SCALE, SCALE)
+
+    -- debug feio
+    love.graphics.setColor(1, 1, 1, 1)
+    local p = tagged.getTagged(tagged.tags.PLAYER)[1]
+    love.graphics.print("Player: " .. p.x .. ", " .. p.y, 0, 0)
 end

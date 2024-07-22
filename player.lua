@@ -36,9 +36,11 @@ function Player:moveUpdate(dt)
         dy = dy + 1
     end
 
-    local running = false
-    if love.keyboard.isDown("lshift", "rshift") then
-        running = true
+    local modifier = 1
+    if self.carrying then
+        modifier = 0.75
+    elseif love.keyboard.isDown("lshift", "rshift") then
+        modifier = 2
     end
 
     local mag = math.sqrt(dx * dx + dy * dy)
@@ -47,20 +49,45 @@ function Player:moveUpdate(dt)
         dy = dy / mag
     end
 
-    local spd = running and self.speed * 2 or self.speed
+    local spd = self.speed * modifier
 
     self.x = self.x + dx * spd * dt
     self.y = self.y + dy * spd * dt
 end
 
-function Player:update(dt)
-    if not self:isVisible() then
-        return
+function Player:dropCarriedItem()
+    -- query world for a receptacle
+    local receptacles = tagged.getTagged(tagged.tags.RECEPTACLE)
+    local nearest, distance = nil, 10
+    for _, receptacle in ipairs(receptacles) do
+        local d = self:distance(receptacle)
+        if not receptacle:getItem() and d < distance then
+            nearest, distance = receptacle, d
+        end
     end
 
-    self:moveUpdate(dt)
+    if nearest then
+        nearest:setItem(self.carrying)
+        self.carrying:pick(nearest)
+        self.carrying = nil
+    else
+        self.carrying:drop(self.x, self.y)
+        self.carrying = nil
+    end
+end
 
-    -- pickable items
+function Player:pickItem(item)
+    if item.holder then
+        -- the holder must be a receptacle if we got here
+        -- unset the item from the holder
+        item.holder:setItem(nil)
+    end
+    item:pick(self)
+    self.carrying = item
+end
+
+function Player:carriedItemUpdate(dt)
+    -- pick up/drop an item
     if not self.carrying then
         local pickables = tagged.getTagged(tagged.tags.PICKABLE)
         local nearest, distance = nil, 10
@@ -72,26 +99,34 @@ function Player:update(dt)
         end
 
         if nearest and love.keyboard.isDown("e") and not self.eWasPressed then
-            nearest:pick(self)
-            self.carrying = nearest
+            self:pickItem(nearest)
         end
     else
         if love.keyboard.isDown("e") and not self.eWasPressed then
-            self.carrying:drop(self.x, self.y)
-            self.carrying = nil
+            -- drop the item
+            self:dropCarriedItem()
         end
     end
 
-    -- interactible items
+    -- interact with an item
     if not self.carrying then
         local interactibles = tagged.getTagged(tagged.tags.INTERACTIBLE)
         for _, interactible in ipairs(interactibles) do
             if self:distance(interactible) < interactible:interactRadius() and love.keyboard.isDown("e") and not self.eWasPressed then
                 interactible:interact()
+                break
             end
         end
     end
+end
 
+function Player:update(dt)
+    if not self:isVisible() then
+        return
+    end
+
+    self:moveUpdate(dt)
+    self:carriedItemUpdate(dt)
     self.eWasPressed = love.keyboard.isDown("e")
 end
 
