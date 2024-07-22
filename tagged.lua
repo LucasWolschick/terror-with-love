@@ -7,6 +7,7 @@ Tagged.tags.PICKABLE = "pickable"
 Tagged.tags.INTERACTIBLE = "interactible"
 Tagged.tags.RECEPTACLE = "receptacle"
 Tagged.tags.CAMERA = "camera"
+Tagged.tags.MAP = "map"
 
 local tags = {}
 

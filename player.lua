@@ -13,7 +13,7 @@ function Player.new(x, y)
     tagged.addTag(self, tagged.tags.PLAYER)
 
     self.w, self.h = plrImage:getDimensions()
-    self.speed = 100
+    self.speed = 256
     self.carrying = nil
 
     self.eWasPressed = false
@@ -50,9 +50,20 @@ function Player:moveUpdate(dt)
     end
 
     local spd = self.speed * modifier
+    local newX = self.x + dx * spd * dt
+    local newY = self.y + dy * spd * dt
 
-    self.x = self.x + dx * spd * dt
-    self.y = self.y + dy * spd * dt
+    for _, map in ipairs(tagged.getTagged(tagged.tags.MAP)) do
+        local collided, dx, dy = map:resolveCollision(
+            { x1 = newX - 16, y1 = newY - 20, x2 = newX + 16, y2 = newY })
+        if collided then
+            newX = newX + dx
+            newY = newY + dy
+        end
+    end
+
+    self.x = newX
+    self.y = newY
 end
 
 function Player:dropCarriedItem()
