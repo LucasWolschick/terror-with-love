@@ -131,6 +131,14 @@ function Player:carriedItemUpdate(dt)
     end
 end
 
+function Player:victoryTriggerUpdate(dt)
+    local game = assert(tagged.getFirstTagged(tagged.tags.GAME))
+
+    if game:getProgress() == 7 and self:distance({ x = 1000, y = 2000, }) < 100 then
+        game:changeState("victory")
+    end
+end
+
 function Player:update(dt)
     if not self:isVisible() then
         return
@@ -138,6 +146,7 @@ function Player:update(dt)
 
     self:moveUpdate(dt)
     self:carriedItemUpdate(dt)
+    self:victoryTriggerUpdate(dt)
     self.eWasPressed = love.keyboard.isDown("e")
 end
 
