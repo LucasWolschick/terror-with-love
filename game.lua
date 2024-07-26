@@ -3,6 +3,7 @@ local tagged    = require "tagged"
 local Camera    = require "camera"
 local Map       = require "map"
 local Hud       = require "hud"
+local Ambience  = require "ambience"
 
 local Game      = {}
 Game.__index    = Game
@@ -27,24 +28,37 @@ function Game:getState()
 end
 
 function Game:changeState(newState)
+    if self.ents then
+        for _, object in ipairs(self.ents) do
+            object:remove()
+        end
+    end
     tagged.wipe()
     tagged.addTag(self, tagged.tags.GAME)
     self.progress = nil
     self.hud = nil
     self.timer = nil
+    self.ents = nil
 
     if newState == "menu" then
         self.timer = 0
     elseif newState == "game" then
-        Map.new()
-        Player.new(1024, 1860)
-        Camera.new(1024 - WIDTH / 2, 1860 - HEIGHT / 2)
+        self.ents = {
+            Map.new(),
+            Player.new(1024, 1860),
+            Camera.new(1024 - WIDTH / 2, 1860 - HEIGHT / 2),
+            Ambience.new(),
+        }
         self.hud = Hud.new()
         self.progress = 0
     elseif newState == "gameover" then
-
+        local lostSnd = love.audio.newSource("assets/lost.wav", "static")
+        lostSnd:setVolume(0.1)
+        love.audio.play(lostSnd)
     elseif newState == "victory" then
-
+        local winSnd = love.audio.newSource("assets/win.wav", "static")
+        winSnd:setVolume(0.05)
+        love.audio.play(winSnd)
     end
 
     self.state = newState

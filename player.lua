@@ -13,9 +13,12 @@ function Player.new(x, y)
     tagged.addTag(self, tagged.tags.PLAYER)
 
     self.w, self.h = plrImage:getDimensions()
-    self.speed = 256
+    self.speed = 128
     self.carrying = nil
     self.lastDirection = { x = 0, y = 1 }
+    self.soundTimer = 0
+    self.stepSnd = love.audio.newSource("assets/step.wav", "static")
+    self.stepSnd:setVolume(0.2)
 
     self.eWasPressed = false
 
@@ -44,17 +47,28 @@ function Player:moveUpdate(dt)
         modifier = 2
     end
 
+    local STEP_DELAY = 0.75
+
     local mag = math.sqrt(dx * dx + dy * dy)
     if mag > 0 then
         dx = dx / mag
         dy = dy / mag
 
         self.lastDirection = { x = dx, y = dy }
+    else
+        self.soundTimer = STEP_DELAY / 2
     end
 
     local spd = self.speed * modifier
     local newX = self.x + dx * spd * dt
     local newY = self.y + dy * spd * dt
+
+    self.soundTimer = self.soundTimer + dt * modifier
+    if self.soundTimer > STEP_DELAY then
+        self.stepSnd:setPitch(1 - math.random() * 0.1)
+        love.audio.play(self.stepSnd)
+        self.soundTimer = 0
+    end
 
     for _, map in ipairs(tagged.getTagged(tagged.tags.MAP)) do
         local collided, dx, dy = map:resolveCollision(

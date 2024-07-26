@@ -3,6 +3,14 @@ local PickableItem       = require "pickableItem"
 local PickableReceptacle = require "pickablereceptacle"
 local tagged             = require "tagged"
 
+local keysnd             = love.audio.newSource("assets/key.wav", "static")
+keysnd:setVolume(0.1)
+local doorsnd = love.audio.newSource("assets/door.wav", "static")
+doorsnd:setVolume(0.1)
+local leversnd = love.audio.newSource("assets/lever.wav", "static")
+leversnd:setVolume(0.1)
+
+
 local function getDoor(id)
     for _, object in ipairs(tagged.getTagged(tagged.tags.DOOR)) do
         if object.id == id then
@@ -72,6 +80,7 @@ local function setupPuzzle2(objects, keyCallback)
         if item and item.id == "prato" and not unlocked then
             unlocked = true
             porta:open()
+            love.audio.play(doorsnd)
         end
     end
 end
@@ -97,15 +106,18 @@ local function setupPuzzle3(objects, keyCallback)
     local leverobject = InteractibleItem.new(alavanca.x, alavanca.y, "alavanca_escritorio", "assets/lever-off.png")
     local lever = "off"
     function leverobject:interact()
+        love.audio.play(leversnd)
         if lever == "off" then
             lever = "on"
             self:setImage("assets/lever-on.png")
             porta:open()
+            love.audio.play(doorsnd)
             keyobject:setVisible(true)
         else
             lever = "off"
             self:setImage("assets/lever-off.png")
             porta:close()
+            love.audio.play(doorsnd)
             keyobject:setVisible(false)
         end
     end
@@ -230,14 +242,17 @@ local function setupPuzzle7(objects, keyCallback)
     local lever = "off"
 
     function leverobject:interact()
+        love.audio.play(leversnd)
         if lever == "off" then
             lever = "on"
             self:setImage("assets/lever-on.png")
             porta:open()
+            love.audio.play(doorsnd)
         else
             lever = "off"
             self:setImage("assets/lever-off.png")
             porta:close()
+            love.audio.play(doorsnd)
         end
     end
 
@@ -260,9 +275,13 @@ return function(tiledMap)
 
     local keys = {}
 
+
+
     local function keyCallback(i)
         return function()
             keys[i] = true
+
+            love.audio.play(keysnd)
 
             local count = 0
             for i = 1, 7 do
@@ -278,6 +297,7 @@ return function(tiledMap)
 
             if count == 7 then
                 assert(getDoor("sala_final")):open()
+                love.audio.play(doorsnd)
             end
         end
     end
