@@ -2,14 +2,7 @@ local InteractibleItem   = require "interactibleItem"
 local PickableItem       = require "pickableItem"
 local PickableReceptacle = require "pickablereceptacle"
 local tagged             = require "tagged"
-
-local keysnd             = love.audio.newSource("assets/key.wav", "static")
-keysnd:setVolume(0.1)
-local doorsnd = love.audio.newSource("assets/door.wav", "static")
-doorsnd:setVolume(0.1)
-local leversnd = love.audio.newSource("assets/lever.wav", "static")
-leversnd:setVolume(0.1)
-
+local sounds             = require "sounds"
 
 local function getDoor(id)
     for _, object in ipairs(tagged.getTagged(tagged.tags.DOOR)) do
@@ -38,7 +31,7 @@ local function setupPuzzle1(objects, keyCallback)
             return false
         end
         self:setVisible(false)
-        keyCallback()
+        keyCallback(chave1)
     end
 
     local statueobject = PickableItem.new(estatueta.x, estatueta.y, "estatueta", "assets/statuette.png")
@@ -68,7 +61,7 @@ local function setupPuzzle2(objects, keyCallback)
 
     function keyobject:interact()
         self:setVisible(false)
-        keyCallback()
+        keyCallback(chave2)
     end
 
     local plateobject = PickableItem.new(prato.x, prato.y, "prato", "assets/dish.png")
@@ -80,7 +73,7 @@ local function setupPuzzle2(objects, keyCallback)
         if item and item.id == "prato" and not unlocked then
             unlocked = true
             porta:open()
-            love.audio.play(doorsnd)
+            sounds.playAt(sounds.sounds.DOOR, porta.x, porta.y)
         end
     end
 end
@@ -100,24 +93,24 @@ local function setupPuzzle3(objects, keyCallback)
 
     function keyobject:interact()
         self:setVisible(false)
-        keyCallback()
+        keyCallback(chave3)
     end
 
     local leverobject = InteractibleItem.new(alavanca.x, alavanca.y, "alavanca_escritorio", "assets/lever-off.png")
     local lever = "off"
     function leverobject:interact()
-        love.audio.play(leversnd)
+        sounds.playAtRelative(sounds.sounds.LEVER, alavanca.x, alavanca.y)
         if lever == "off" then
             lever = "on"
             self:setImage("assets/lever-on.png")
             porta:open()
-            love.audio.play(doorsnd)
+            sounds.playAt(sounds.sounds.DOOR, porta.x, porta.y)
             keyobject:setVisible(true)
         else
             lever = "off"
             self:setImage("assets/lever-off.png")
             porta:close()
-            love.audio.play(doorsnd)
+            sounds.playAt(sounds.sounds.DOOR, porta.x, porta.y)
             keyobject:setVisible(false)
         end
     end
@@ -141,7 +134,7 @@ local function setupPuzzle4(objects, keyCallback)
             return false
         end
         self:setVisible(false)
-        keyCallback()
+        keyCallback(chave4)
     end
 
     local mirrorobject = PickableItem.new(espelho.x, espelho.y, "espelho", "assets/mirror.png")
@@ -168,7 +161,7 @@ local function setupPuzzle5(objects, keyCallback)
 
     function keyobject:interact()
         self:setVisible(false)
-        keyCallback()
+        keyCallback(chave5)
     end
 
     local interacted = false
@@ -200,7 +193,7 @@ local function setupPuzzle6(objects, keyCallback)
             return false
         end
         self:setVisible(false)
-        keyCallback()
+        keyCallback(chave6)
     end
 
     local bucketobject = PickableItem.new(balde.x, balde.y, "balde", "assets/bucket.png")
@@ -235,24 +228,24 @@ local function setupPuzzle7(objects, keyCallback)
 
     function keyobject:interact()
         self:setVisible(false)
-        keyCallback()
+        keyCallback(chave7)
     end
 
     local leverobject = InteractibleItem.new(alavanca.x, alavanca.y, "alavanca_quarto1", "assets/lever-off.png")
     local lever = "off"
 
     function leverobject:interact()
-        love.audio.play(leversnd)
+        sounds.playAtRelative(sounds.sounds.LEVER, alavanca.x, alavanca.y)
         if lever == "off" then
             lever = "on"
             self:setImage("assets/lever-on.png")
             porta:open()
-            love.audio.play(doorsnd)
+            sounds.playAt(sounds.sounds.DOOR, porta.x, porta.y)
         else
             lever = "off"
             self:setImage("assets/lever-off.png")
             porta:close()
-            love.audio.play(doorsnd)
+            sounds.playAt(sounds.sounds.DOOR, porta.x, porta.y)
         end
     end
 
@@ -278,10 +271,14 @@ return function(tiledMap)
 
 
     local function keyCallback(i)
-        return function()
+        return function(keyobj)
+            if keys[i] then
+                return
+            end
+
             keys[i] = true
 
-            love.audio.play(keysnd)
+            sounds.playAtRelative(sounds.sounds.KEY, keyobj.x, keyobj.y)
 
             local count = 0
             for i = 1, 7 do
@@ -296,8 +293,9 @@ return function(tiledMap)
             end
 
             if count == 7 then
-                assert(getDoor("sala_final")):open()
-                love.audio.play(doorsnd)
+                local door = assert(getDoor("sala_final"))
+                door:open()
+                sounds.playAt(sounds.sounds.DOOR, door.x, door.y)
             end
         end
     end

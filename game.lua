@@ -4,6 +4,7 @@ local Camera    = require "camera"
 local Map       = require "map"
 local Hud       = require "hud"
 local Ambience  = require "ambience"
+local sounds    = require "sounds"
 
 local Game      = {}
 Game.__index    = Game
@@ -52,13 +53,9 @@ function Game:changeState(newState)
         self.hud = Hud.new()
         self.progress = 0
     elseif newState == "gameover" then
-        local lostSnd = love.audio.newSource("assets/lost.wav", "static")
-        lostSnd:setVolume(0.1)
-        love.audio.play(lostSnd)
+        sounds.play(sounds.sounds.LOST)
     elseif newState == "victory" then
-        local winSnd = love.audio.newSource("assets/win.wav", "static")
-        winSnd:setVolume(0.05)
-        love.audio.play(winSnd)
+        sounds.play(sounds.sounds.WIN)
     end
 
     self.state = newState

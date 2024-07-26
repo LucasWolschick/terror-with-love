@@ -1,5 +1,6 @@
 local Entity = require "entity"
 local tagged = require "tagged"
+local sounds = require "sounds"
 
 local Player = {}
 Player.__index = Player
@@ -43,8 +44,6 @@ function Player.new(x, y)
     self.carrying = nil
     self.lastDirection = { x = 0, y = 1 }
     self.soundTimer = 0
-    self.stepSnd = love.audio.newSource("assets/step.wav", "static")
-    self.stepSnd:setVolume(0.2)
     self.img = images.up
 
     self.eWasPressed = false
@@ -100,12 +99,6 @@ function Player:moveUpdate(dt)
     local newX = self.x + dx * spd * dt
     local newY = self.y + dy * spd * dt
 
-    self.soundTimer = self.soundTimer + dt * modifier
-    if self.soundTimer > STEP_DELAY then
-        self.stepSnd:setPitch(1 - math.random() * 0.1)
-        love.audio.play(self.stepSnd)
-        self.soundTimer = 0
-    end
 
     for _, map in ipairs(tagged.getTagged(tagged.tags.MAP)) do
         local collided, dx, dy = map:resolveCollision(
@@ -118,6 +111,13 @@ function Player:moveUpdate(dt)
 
     self.x = newX
     self.y = newY
+
+    self.soundTimer = self.soundTimer + dt * modifier
+    if self.soundTimer > STEP_DELAY then
+        sounds.playAtRelative(sounds.sounds.PLR_STEP, self.x, self.y)
+        self.soundTimer = 0
+    end
+    sounds.setListeningPosition(self.x, self.y)
 end
 
 function Player:dropCarriedItem()
@@ -139,6 +139,8 @@ function Player:dropCarriedItem()
         self.carrying:drop(self.x, self.y)
         self.carrying = nil
     end
+
+    sounds.playAtRelative(sounds.sounds.DROP, self.x, self.y)
 end
 
 function Player:pickItem(item)
@@ -147,6 +149,7 @@ function Player:pickItem(item)
         -- unset the item from the holder
         item.holder:setItem(nil)
     end
+    sounds.playAtRelative(sounds.sounds.PICK_UP, self.x, self.y)
     item:pick(self)
     self.carrying = item
 end

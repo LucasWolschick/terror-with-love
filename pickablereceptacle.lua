@@ -30,11 +30,8 @@ function PickableReceptacle:draw()
     if not self:isVisible() then
         return
     end
-    if self.holding then
-        love.graphics.setColor(0, 1, 0, 1)
-    else
-        love.graphics.setColor(1, 1, 0, 1)
-    end
+    love.graphics.setColor(1, 1, 0, 1)
+    love.graphics.setLineWidth(1)
     love.graphics.circle("line", self.x, self.y, 16)
 
     if self.holding then
