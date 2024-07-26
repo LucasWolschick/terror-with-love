@@ -42,7 +42,6 @@ function Entity:drawEnd()
 end
 
 function Entity:remove()
-    print("WHAT")
     tagged.removeTag(self, tagged.tags.ENTITY)
 end
 
