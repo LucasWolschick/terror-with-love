@@ -134,6 +134,7 @@ function Map:draw()
     assert(camera, "cant draw map without camera")
 
     self.map:drawTileLayer(self.map.layers["ground"])
+    self.map:drawTileLayer(self.map.layers["furniture"])
 end
 
 function Map:remove()

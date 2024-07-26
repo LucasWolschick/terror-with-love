@@ -1,10 +1,36 @@
 local Entity = require "entity"
 local tagged = require "tagged"
-local plrImage = love.graphics.newImage("assets/player.png")
 
 local Player = {}
 Player.__index = Player
 setmetatable(Player, Entity)
+
+local images = {
+    down = {
+        id = "down",
+        img = love.graphics.newImage("assets/player-front.png"),
+        item_offset = { x = 44, y = 85 },
+        item_z = "front"
+    },
+    up = {
+        id = "up",
+        img = love.graphics.newImage("assets/player-back.png"),
+        item_offset = { x = 16, y = 85 },
+        item_z = "back"
+    },
+    left = {
+        id = "left",
+        img = love.graphics.newImage("assets/player-left.png"),
+        item_offset = { x = 40, y = 83 },
+        item_z = "front"
+    },
+    right = {
+        id = "right",
+        img = love.graphics.newImage("assets/player-right.png"),
+        item_offset = { x = 40, y = 83 },
+        item_z = "back"
+    }
+}
 
 function Player.new(x, y)
     local self = Entity.new(x, y)
@@ -12,9 +38,10 @@ function Player.new(x, y)
 
     tagged.addTag(self, tagged.tags.PLAYER)
 
-    self.w, self.h = plrImage:getDimensions()
+    self.w, self.h = images.up.img:getDimensions()
     self.speed = 256
     self.carrying = nil
+    self.img = images.up
 
     self.eWasPressed = false
 
@@ -47,6 +74,16 @@ function Player:moveUpdate(dt)
     if mag > 0 then
         dx = dx / mag
         dy = dy / mag
+
+        if dx > 0 then
+            self.img = images.right
+        elseif dx < 0 then
+            self.img = images.left
+        elseif dy > 0 then
+            self.img = images.down
+        elseif dy < 0 then
+            self.img = images.up
+        end
     end
 
     local spd = self.speed * modifier
@@ -155,8 +192,20 @@ function Player:draw()
         return
     end
 
+    if self.carrying and self.img.item_z == "back" then
+        local offset = self.img.item_offset
+        love.graphics.setColor(1, 1, 1, 1)
+        self.carrying:drawHeld(self.x - self.w / 2 + offset.x, self.y - self.h + offset.y)
+    end
+
     love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.draw(plrImage, math.floor(self.x - self.w / 2), math.floor(self.y - self.h), 0, 1, 1)
+    love.graphics.draw(self.img.img, math.floor(self.x - self.w / 2), math.floor(self.y - self.h), 0, 1, 1)
+
+    if self.carrying and self.img.item_z == "front" then
+        local offset = self.img.item_offset
+        love.graphics.setColor(1, 1, 1, 1)
+        self.carrying:drawHeld(self.x - self.w / 2 + offset.x, self.y - self.h + offset.y)
+    end
 end
 
 function Player:remove()

@@ -40,12 +40,25 @@ function PickableItem:draw()
         return
     end
 
-    love.graphics.setColor(1, 1, 1, 1)
     if self.holder then
-        love.graphics.draw(self.img, math.floor(self.holder.x - self.w / 2), math.floor(self.holder.y - self.h), 0, 1, 1)
-    else
-        love.graphics.draw(self.img, math.floor(self.x - self.w / 2), math.floor(self.y - self.h), 0, 1, 1)
+        return
     end
+
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.draw(self.img, math.floor(self.x - self.w / 2), math.floor(self.y - self.h), 0, 1, 1)
+end
+
+function PickableItem:drawHeld(x, y)
+    if not self:isVisible() then
+        return
+    end
+
+    if not self.holder then
+        return
+    end
+
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.draw(self.img, math.floor(x - self.w / 2), math.floor(y - self.h), 0, 1, 1)
 end
 
 function PickableItem:zIndex()
