@@ -35,7 +35,12 @@ function PickableReceptacle:draw()
     else
         love.graphics.setColor(1, 1, 0, 1)
     end
-    love.graphics.rectangle("line", self.x - 16, self.y - 16, 32, 32)
+    love.graphics.circle("line", self.x, self.y, 16)
+
+    if self.holding then
+        love.graphics.setColor(1, 1, 1, 1)
+        self.holding:drawHeld(self.x, self.y)
+    end
 end
 
 return PickableReceptacle

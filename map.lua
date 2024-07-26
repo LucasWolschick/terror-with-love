@@ -139,6 +139,7 @@ function Map:draw()
     assert(camera, "cant draw map without camera")
 
     self.map:drawTileLayer(self.map.layers["ground"])
+    self.map:drawTileLayer(self.map.layers["furniture"])
 end
 
 local BLUE = { 0.067, 0.0, 0.267 }
