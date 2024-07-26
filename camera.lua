@@ -128,6 +128,15 @@ function Camera:update(dt)
     self.y = t * (tgtY) + (1 - t) * self.y
 end
 
+function Camera:getActiveRegion()
+    if self.activeBox then
+        return self.activeBox.x1 - PADDING, self.activeBox.y1 - PADDING, self.activeBox.x2 + PADDING,
+            self.activeBox.y2 + PADDING
+    else
+        return self.x - WIDTH / 2, self.y - HEIGHT / 2, self.x + WIDTH / 2, self.y + HEIGHT / 2
+    end
+end
+
 function Camera:draw()
     love.graphics.push()
     love.graphics.translate(math.floor(-self.x), math.floor(-self.y))

@@ -10,6 +10,9 @@ local Map      = {}
 Map.__index    = Map
 setmetatable(Map, Entity)
 
+local shiny = love.graphics.newImage("assets/shine.png")
+local flashlight = love.graphics.newImage("assets/flashlight.png")
+
 local function rotate(t, theta)
     -- move vertices to origin
     local x1 = t.x1 - t.x1
@@ -87,6 +90,8 @@ function Map.new()
         Door.new(object.name, t.x1, t.y1, t.x2 - t.x1, t.y2 - t.y1)
     end
 
+    self.shadowCanvas = love.graphics.newCanvas(2048, 2048)
+
     mapsetup(self.map)
 
     tagged.addTag(self, tagged.tags.MAP)
@@ -134,6 +139,45 @@ function Map:draw()
     assert(camera, "cant draw map without camera")
 
     self.map:drawTileLayer(self.map.layers["ground"])
+end
+
+local BLUE = { 0.067, 0.0, 0.267 }
+local YELLOW = { 1.0, 0.909, 0.544 }
+
+function Map:drawEnd()
+    local prevCanvas = love.graphics.getCanvas()
+    love.graphics.setCanvas(self.shadowCanvas)
+    love.graphics.push()
+    love.graphics.origin()
+
+    love.graphics.clear(BLUE)
+    love.graphics.setColor(YELLOW)
+
+    -- clear out only the player room
+    for _, player in ipairs(tagged.getTagged(tagged.tags.PLAYER)) do
+        -- glow around player
+        love.graphics.setColor(YELLOW)
+        love.graphics.draw(shiny, player.x - shiny:getWidth() / 2, player.y - player.h / 2 - shiny:getHeight() / 2, 0, 1,
+            1)
+
+        -- flashlight
+        local ld = player:getDirection()
+        local ldx, ldy = ld.x, ld.y
+        -- if ldx ~= 0 and ldy ~= 0 then
+        --     ldy = 0
+        -- end
+        local angle = math.atan2(ldy, ldx)
+        love.graphics.draw(flashlight, player.x, player.y - player.h / 2, angle, 0.25, .5, 60,
+            flashlight:getHeight() / 2)
+    end
+
+    love.graphics.pop()
+    love.graphics.setCanvas(prevCanvas)
+
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.setBlendMode("multiply", "premultiplied")
+    love.graphics.draw(self.shadowCanvas, 0, 0)
+    love.graphics.setBlendMode("alpha", "alphamultiply")
 end
 
 function Map:remove()

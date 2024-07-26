@@ -15,6 +15,7 @@ function Player.new(x, y)
     self.w, self.h = plrImage:getDimensions()
     self.speed = 256
     self.carrying = nil
+    self.lastDirection = { x = 0, y = 1 }
 
     self.eWasPressed = false
 
@@ -47,6 +48,8 @@ function Player:moveUpdate(dt)
     if mag > 0 then
         dx = dx / mag
         dy = dy / mag
+
+        self.lastDirection = { x = dx, y = dy }
     end
 
     local spd = self.speed * modifier
@@ -69,7 +72,7 @@ end
 function Player:dropCarriedItem()
     -- query world for a receptacle
     local receptacles = tagged.getTagged(tagged.tags.RECEPTACLE)
-    local nearest, distance = nil, 10
+    local nearest, distance = nil, 32
     for _, receptacle in ipairs(receptacles) do
         local d = self:distance(receptacle)
         if not receptacle:getItem() and d < distance then
@@ -97,11 +100,15 @@ function Player:pickItem(item)
     self.carrying = item
 end
 
+function Player:getDirection()
+    return self.lastDirection
+end
+
 function Player:carriedItemUpdate(dt)
     -- pick up/drop an item
     if not self.carrying then
         local pickables = tagged.getTagged(tagged.tags.PICKABLE)
-        local nearest, distance = nil, 20
+        local nearest, distance = nil, 48
         for _, pickable in ipairs(pickables) do
             local d = self:distance(pickable)
             if pickable:pickable() and d < distance then
