@@ -9,6 +9,7 @@ function Ambience.new()
     self.ambience = love.audio.newSource("assets/sounds/drone.ogg", "stream")
     self.ambience:setLooping(true)
     self.ambience:setRelative(true)
+    love.audio.setDistanceModel("linearclamped")
     love.audio.play(self.ambience)
 
     setmetatable(self, Ambience)

@@ -144,6 +144,7 @@ end
 
 local BLUE = { 0.067, 0.0, 0.267 }
 local YELLOW = { 1.0, 0.909, 0.544 }
+local BLUISH_WHITE = { 0.5, 0.5, 0.7 }
 
 function Map:drawEnd()
     local prevCanvas = love.graphics.getCanvas()
@@ -170,6 +171,14 @@ function Map:drawEnd()
         local angle = math.atan2(ldy, ldx)
         love.graphics.draw(flashlight, player.x, player.y - player.h / 2, angle, 0.25, .5, 60,
             flashlight:getHeight() / 2)
+    end
+
+    for _, monster in ipairs(tagged.getTagged(tagged.tags.MONSTER)) do
+        -- glow around monster
+        love.graphics.setColor(BLUISH_WHITE)
+        love.graphics.draw(shiny, monster.x - shiny:getWidth() / 2, monster.y - monster.h / 2 - shiny:getHeight() / 2, 0,
+            1,
+            1)
     end
 
     love.graphics.pop()

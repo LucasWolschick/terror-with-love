@@ -114,7 +114,11 @@ function Player:moveUpdate(dt)
 
     self.soundTimer = self.soundTimer + dt * modifier
     if self.soundTimer > STEP_DELAY then
-        sounds.playAtRelative(sounds.sounds.PLR_STEP, self.x, self.y)
+        if modifier < 2 then
+            sounds.playAtRelative(sounds.sounds.PLR_STEP, self.x, self.y)
+        else
+            sounds.playAtRelative(sounds.sounds.PLR_RUN, self.x, self.y)
+        end
         self.soundTimer = 0
     end
     sounds.setListeningPosition(self.x, self.y)
@@ -123,7 +127,7 @@ end
 function Player:dropCarriedItem()
     -- query world for a receptacle
     local receptacles = tagged.getTagged(tagged.tags.RECEPTACLE)
-    local nearest, distance = nil, 32
+    local nearest, distance = nil, 80
     for _, receptacle in ipairs(receptacles) do
         local d = self:distance(receptacle)
         if not receptacle:getItem() and d < distance then
@@ -200,6 +204,16 @@ function Player:victoryTriggerUpdate(dt)
     end
 end
 
+function Player:defeatCheck(dt)
+    local game = assert(tagged.getFirstTagged(tagged.tags.GAME))
+
+    for _, monster in ipairs(tagged.getTagged(tagged.tags.MONSTER)) do
+        if self:distance(monster) < 32 then
+            game:changeState("gameover")
+        end
+    end
+end
+
 function Player:update(dt)
     if not self:isVisible() then
         return
@@ -208,6 +222,7 @@ function Player:update(dt)
     self:moveUpdate(dt)
     self:carriedItemUpdate(dt)
     self:victoryTriggerUpdate(dt)
+    self:defeatCheck(dt)
     self.eWasPressed = love.keyboard.isDown("e")
 end
 

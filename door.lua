@@ -18,6 +18,10 @@ function Door.new(id, x, y, w, h)
     return self
 end
 
+function Door:zIndex()
+    return self.y + self.h / 2
+end
+
 function Door:open()
     self:setVisible(false)
 end

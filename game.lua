@@ -5,6 +5,7 @@ local Map       = require "map"
 local Hud       = require "hud"
 local Ambience  = require "ambience"
 local sounds    = require "sounds"
+local Monster   = require "monster"
 
 local Game      = {}
 Game.__index    = Game
@@ -49,6 +50,7 @@ function Game:changeState(newState)
             Player.new(1024, 1860),
             Camera.new(1024 - WIDTH / 2, 1860 - HEIGHT / 2),
             Ambience.new(),
+            Monster.new(1024 - WIDTH / 2, 1860 - HEIGHT / 2)
         }
         self.hud = Hud.new()
         self.progress = 0
@@ -75,6 +77,9 @@ function Game:update(dt)
     elseif self:getState() == "game" then
         for _, object in ipairs(tagged.getTagged(tagged.tags.ENTITY)) do
             object:update(dt)
+            if self:getState() ~= "game" then
+                break
+            end
         end
     end
 

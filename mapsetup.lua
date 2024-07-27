@@ -260,6 +260,93 @@ local function setupPuzzle7(objects, keyCallback)
     end
 end
 
+local function setupGraph(tiledMap)
+    local g = {}
+    -- vertices
+    for _, object in pairs(tiledMap.layers["nodes"].objects) do
+        g[tonumber(object.name)] = {}
+    end
+
+    local function e(v1, v2)
+        table.insert(g[v1], v2)
+        table.insert(g[v2], v1)
+    end
+
+    -- arestas
+    -- biblioteca
+    e(1, 2)
+    e(2, 5)
+
+    -- piano
+    e(5, 7)
+    e(7, 19)
+
+    -- corredor
+    e(19, 18)
+    e(18, 17)
+    e(19, 20)
+    e(20, 21)
+    e(21, 22)
+
+    -- suite
+    e(18, 23)
+    e(23, 35)
+
+    -- quarto
+    e(17, 6)
+
+    -- sala lateral
+    e(19, 24)
+
+    -- saguão
+    e(24, 25)
+    e(25, 31)
+    e(31, 32)
+    e(32, 30)
+    e(30, 27)
+    e(27, 26)
+    e(26, 25)
+    e(26, 20)
+
+    -- lareira
+    e(30, 28)
+    e(28, 33)
+    e(33, 34)
+
+    -- jantar
+    e(20, 16)
+    e(16, 14)
+    e(14, 15)
+    e(14, 13)
+    e(13, 16)
+    e(16, 15)
+    e(15, 10)
+    e(10, 9)
+    e(9, 8)
+    e(8, 13)
+
+    -- cozinha
+    e(9, 4)
+    e(4, 3)
+
+    -- quarto
+    e(21, 11)
+
+    -- quarto 2
+    e(22, 12)
+    e(22, 29)
+
+    local positions = {}
+    for _, object in pairs(tiledMap.layers["nodes"].objects) do
+        positions[tonumber(object.name)] = { x = object.x, y = object.y }
+    end
+
+    return {
+        graph = g,
+        positions = positions
+    }
+end
+
 return function(tiledMap)
     local objects = {}
     for _, object in ipairs(tiledMap.layers["items"].objects) do
@@ -267,8 +354,6 @@ return function(tiledMap)
     end
 
     local keys = {}
-
-
 
     local function keyCallback(i)
         return function(keyobj)
@@ -307,4 +392,7 @@ return function(tiledMap)
     setupPuzzle5(objects, keyCallback(5))
     setupPuzzle6(objects, keyCallback(6))
     setupPuzzle7(objects, keyCallback(7))
+
+    local g = setupGraph(tiledMap)
+    tagged.addTag(g, tagged.tags.GRAPH)
 end

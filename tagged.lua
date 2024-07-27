@@ -10,6 +10,8 @@ Tagged.tags.CAMERA = "camera"
 Tagged.tags.MAP = "map"
 Tagged.tags.GAME = "game"
 Tagged.tags.DOOR = "door"
+Tagged.tags.MONSTER = "monster"
+Tagged.tags.GRAPH = "graph"
 
 local tags = {}
 

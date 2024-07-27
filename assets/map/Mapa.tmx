@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="64" tileheight="64" infinite="0" nextlayerid="14" nextobjectid="164">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="64" tileheight="64" infinite="0" nextlayerid="15" nextobjectid="201">
  <editorsettings>
   <export target="map.lua" format="lua"/>
  </editorsettings>
@@ -179,7 +179,7 @@
   <object id="105" x="1408" y="1408" width="640" height="640"/>
   <object id="100" x="1664" y="1344" width="384" height="256"/>
  </objectgroup>
- <objectgroup id="11" name="items">
+ <objectgroup id="11" name="items" visible="0">
   <object id="108" name="estatueta" x="1822" y="632.333">
    <point/>
   </object>
@@ -192,7 +192,7 @@
   <object id="113" name="prato" x="832" y="768">
    <point/>
   </object>
-  <object id="114" name="alvo_prato" x="1187.33" y="899.667">
+  <object id="114" name="alvo_prato" x="1183.33" y="833.667">
    <point/>
   </object>
   <object id="115" name="chave2" x="1088" y="320">
@@ -243,5 +243,112 @@
   <object id="131" name="sala_cozinha" x="1152" y="448" width="128" height="192"/>
   <object id="132" name="sala_reuniao" x="1856" y="1280" width="128.5" height="126"/>
   <object id="133" name="sala_arte" x="1635" y="1728" width="55.5" height="320.5"/>
+ </objectgroup>
+ <objectgroup id="14" name="nodes">
+  <object id="164" name="3" x="896" y="320">
+   <point/>
+  </object>
+  <object id="167" name="4" x="1215" y="411">
+   <point/>
+  </object>
+  <object id="168" name="9" x="1217" y="675">
+   <point/>
+  </object>
+  <object id="169" name="10" x="1326" y="707">
+   <point/>
+  </object>
+  <object id="170" name="15" x="1326.06" y="952.03">
+   <point/>
+  </object>
+  <object id="171" name="14" x="1087" y="960">
+   <point/>
+  </object>
+  <object id="172" name="13" x="862" y="957">
+   <point/>
+  </object>
+  <object id="173" name="8" x="867" y="677">
+   <point/>
+  </object>
+  <object id="174" name="16" x="1086" y="1025">
+   <point/>
+  </object>
+  <object id="175" name="20" x="1087" y="1193">
+   <point/>
+  </object>
+  <object id="176" name="19" x="575" y="1196">
+   <point/>
+  </object>
+  <object id="177" name="7" x="662" y="856">
+   <point/>
+  </object>
+  <object id="178" name="5" x="574" y="524">
+   <point/>
+  </object>
+  <object id="179" name="2" x="547" y="352">
+   <point/>
+  </object>
+  <object id="180" name="1" x="157" y="349">
+   <point/>
+  </object>
+  <object id="181" name="17" x="189" y="1203">
+   <point/>
+  </object>
+  <object id="182" name="6" x="193" y="971">
+   <point/>
+  </object>
+  <object id="183" name="18" x="255" y="1235">
+   <point/>
+  </object>
+  <object id="184" name="23" x="242" y="1621">
+   <point/>
+  </object>
+  <object id="185" name="35" x="247" y="1987">
+   <point/>
+  </object>
+  <object id="186" name="24" x="567" y="1614">
+   <point/>
+  </object>
+  <object id="187" name="26" x="1086" y="1467">
+   <point/>
+  </object>
+  <object id="188" name="25" x="807" y="1657.73">
+   <point/>
+  </object>
+  <object id="189" name="31" x="798" y="1865">
+   <point/>
+  </object>
+  <object id="190" name="32" x="1307" y="1858">
+   <point/>
+  </object>
+  <object id="191" name="27" x="1315" y="1474">
+   <point/>
+  </object>
+  <object id="192" name="30" x="1310" y="1633">
+   <point/>
+  </object>
+  <object id="193" name="28" x="1534" y="1622">
+   <point/>
+  </object>
+  <object id="194" name="33" x="1542" y="1964">
+   <point/>
+  </object>
+  <object id="195" name="21" x="1533" y="1202">
+   <point/>
+  </object>
+  <object id="196" name="11" x="1561" y="766">
+   <point/>
+  </object>
+  <object id="197" name="22" x="1925" y="1191">
+   <point/>
+  </object>
+  <object id="198" name="12" x="1898" y="762">
+   <point/>
+  </object>
+  <object id="199" name="29" x="1928" y="1499">
+   <point/>
+  </object>
+  <object id="200" name="34" x="1853" y="1901">
+   <point/>
+  </object>
  </objectgroup>
 </map>

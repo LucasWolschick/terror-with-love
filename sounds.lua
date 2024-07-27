@@ -4,7 +4,7 @@ Sounds.sounds = {
     LOST = {
         id = "LOST",
         snd = love.audio.newSource("assets/sounds/lost.wav", "static"),
-        volume = 0.1,
+        volume = 0.2,
         loudness = 0,
     },
     WIN = {
@@ -19,6 +19,12 @@ Sounds.sounds = {
         snd = love.audio.newSource("assets/sounds/step.wav", "static"),
         volume = 0.2,
         loudness = 1,
+    },
+    PLR_RUN = {
+        id = "PLR_RUN",
+        snd = love.audio.newSource("assets/sounds/step.wav", "static"),
+        volume = 0.2,
+        loudness = 2,
     },
     KEY = {
         id = "KEY",
@@ -41,7 +47,7 @@ Sounds.sounds = {
     DOOR = {
         id = "DOOR",
         snd = love.audio.newSource("assets/sounds/door.wav", "static"),
-        volume = 20,
+        volume = 0.2,
         loudness = 1,
     },
     LEVER = {
@@ -54,7 +60,7 @@ Sounds.sounds = {
     MONSTER_STEP = {
         id = "MONSTER_STEP",
         snd = love.audio.newSource("assets/sounds/scaryfoot.wav", "static"),
-        volume = 0.1,
+        volume = 0.12,
         loudness = 0,
     }
 }
